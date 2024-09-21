@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
+from django.utils import timezone
 from datetime import timedelta
 
 
@@ -14,6 +16,9 @@ class Concert(models.Model):
     singer_name = models.CharField(max_length=100, verbose_name="Singer Name")
     length = models.IntegerField(
         verbose_name="Concert Length (minutes)", validators=[MinValueValidator(1)]
+    )
+    Concert_picture = models.ImageField(
+        upload_to="Concert_pictures/", verbose_name="عکس پروفایل", null=True, blank=True
     )
     date = models.DateTimeField(verbose_name="Concert Date and Time")
     location = models.CharField(max_length=255, verbose_name="Concert Location")
@@ -92,10 +97,10 @@ class Location(models.Model):
 
 class TimeSlot(models.Model):
     concert = models.ForeignKey(
-        "Concert", on_delete=models.PROTECT, verbose_name="Concert"
+        Concert, on_delete=models.PROTECT, verbose_name="Concert"
     )
     location = models.ForeignKey(
-        "Location", on_delete=models.PROTECT, verbose_name="Location"
+        Location, on_delete=models.PROTECT, verbose_name="Location"
     )
     start_date_time = models.DateTimeField(verbose_name="Start Date and Time")
     end_date_time = models.DateTimeField(
@@ -141,7 +146,7 @@ class TimeSlot(models.Model):
             self.end_date_time = self.start_date_time + timedelta(
                 minutes=self.concert.length
             )
-        self.full_clean()
+        self.full_clean()  # Ensure the clean method is called
         super().save(*args, **kwargs)
 
 
@@ -179,3 +184,66 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"{self.name} {self.family} - {self.gender}"
+
+
+class Ticket(models.Model):
+    profilemodel = models.ForeignKey(
+        Profile,
+        on_delete=models.PROTECT,
+        related_name="tickets",
+        verbose_name="Profile",
+    )
+    timemodel = models.ForeignKey(
+        TimeSlot,
+        on_delete=models.PROTECT,
+        related_name="tickets",
+        verbose_name="TimeSlot",
+    )
+    name = models.CharField(max_length=1000)
+    price = models.DecimalField(
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)],
+        verbose_name="Ticket Price",
+    )
+    Ticket_picture = models.ImageField(
+        upload_to="Ticket_pictures/", verbose_name="عکس پروفایل", null=True, blank=True
+    )
+
+    purchase_date = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ خرید")
+    ticket_code = models.CharField(max_length=100, unique=True, verbose_name="کد بلیط")
+
+    TICKET_STATUS_CHOICES = [
+        ("active", "فعال"),
+        ("expired", "منقضی"),
+        ("canceled", "لغو شده"),
+    ]
+    ticket_status = models.CharField(
+        max_length=10,
+        choices=TICKET_STATUS_CHOICES,
+        default="active",
+        verbose_name="وضعیت بلیط",
+    )
+
+    reserved_seats = models.IntegerField(
+        default=1, verbose_name="تعداد صندلی‌های رزرو شده"
+    )
+    expiration_date = models.DateTimeField(
+        verbose_name="تاریخ انقضا", null=True, blank=True
+    )
+
+    PAYMENT_METHOD_CHOICES = [
+        ("credit_card", "کارت اعتباری"),
+        ("paypal", "PayPal"),
+        ("cash", "نقدی"),
+    ]
+    payment_method = models.CharField(
+        max_length=20, choices=PAYMENT_METHOD_CHOICES, verbose_name="نحوه پرداخت"
+    )
+
+    additional_notes = models.TextField(
+        blank=True, null=True, verbose_name="توضیحات اضافی"
+    )
+
+    def __str__(self):
+        return f"{self.name} - {self.profilemodel.name} {self.profilemodel.family} (${self.price})"
