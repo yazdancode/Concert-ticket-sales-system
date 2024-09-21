@@ -160,3 +160,4 @@ Thumbs.db #thumbnail cache on Windows
 *.xml
 *.iml
 *.sqlite3
+*.env

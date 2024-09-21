@@ -129,6 +129,8 @@ class TimeSlot(models.Model):
         max_length=10, choices=STATUS_CHOICES, default="active", verbose_name="Status"
     )
     remarks = models.TextField(blank=True, null=True, verbose_name="Additional Remarks")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
@@ -160,7 +162,7 @@ class Profile(models.Model):
 
     birth_date = models.DateField(verbose_name="تاریخ تولد", null=True, blank=True)
     email = models.EmailField(verbose_name="آدرس ایمیل", unique=True, max_length=100)
-    phone_number = models.IntegerField(
+    phone_number = models.CharField(
         max_length=15, verbose_name="شماره تلفن", null=True, blank=True
     )
     profile_picture = models.ImageField(
