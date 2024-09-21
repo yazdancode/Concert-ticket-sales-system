@@ -1,42 +1,45 @@
-from django.db import models
-from django.core.validators import MinValueValidator
-from django.core.exceptions import ValidationError
-from django.utils import timezone
 from datetime import timedelta
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.db import models
 
 
 class ConcertStatus(models.TextChoices):
-    AVAILABLE = "available", "Available"
-    SOLD_OUT = "sold_out", "Sold Out"
-    CANCELLED = "cancelled", "Cancelled"
+    AVAILABLE = "موجود است", "موجود است"
+    SOLD_OUT = "فروخته شد", "فروخته شد"
+    CANCELLED = "لغو شد", "لغو شد"
 
 
 class Concert(models.Model):
-    name = models.CharField(max_length=100, verbose_name="Concert Name")
-    singer_name = models.CharField(max_length=100, verbose_name="Singer Name")
+    name = models.CharField(max_length=100, verbose_name="نام کنسرت")
+    singer_name = models.CharField(max_length=100, verbose_name="نام خواننده")
     length = models.IntegerField(
-        verbose_name="Concert Length (minutes)", validators=[MinValueValidator(1)]
+        verbose_name="مدت کنسرت (دقیقه)", validators=[MinValueValidator(1)]
     )
     Concert_picture = models.ImageField(
         upload_to="Concert_pictures/", verbose_name="عکس پروفایل", null=True, blank=True
     )
-    date = models.DateTimeField(verbose_name="Concert Date and Time")
-    location = models.CharField(max_length=255, verbose_name="Concert Location")
+    date = models.DateTimeField(verbose_name="تاریخ و زمان کنسرت")
+    location = models.CharField(max_length=255, verbose_name="محل برگزاری کنسرت")
     available_tickets = models.IntegerField(
-        verbose_name="Available Tickets", validators=[MinValueValidator(0)]
+        verbose_name="بلیط های موجود", validators=[MinValueValidator(0)]
     )
     ticket_price = models.DecimalField(
-        max_digits=8, decimal_places=2, verbose_name="Ticket Price"
+        max_digits=8, decimal_places=2, verbose_name="قیمت بلیط"
     )
     description = models.TextField(
-        blank=True, null=True, verbose_name="Concert Description"
+        blank=True, null=True, verbose_name="توضیحات کنسرت"
     )
     ticket_status = models.CharField(
         max_length=10,
         choices=ConcertStatus.choices,
         default=ConcertStatus.AVAILABLE,
-        verbose_name="Ticket Status",
+        verbose_name="وضعیت بلیط",
     )
+    
+    class Meta:
+        verbose_name = "کنسرت"
+        verbose_name_plural =  "کنسرت"
 
     def __str__(self):
         return f"{self.name} by {self.singer_name} at {self.location}"
@@ -90,6 +93,11 @@ class Location(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    
+    
+    class Meta:
+        verbose_name = 'مکان'
+        verbose_name_plural = 'مکان'
 
     def __str__(self):
         return self.name
