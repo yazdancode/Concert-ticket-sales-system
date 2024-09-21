@@ -159,3 +159,5 @@ Thumbs.db #thumbnail cache on Windows
 *.idea/
 *.xml
 *.iml
+*.sqlite3
+.idea/Concert.iml
