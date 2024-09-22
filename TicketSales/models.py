@@ -46,53 +46,54 @@ class Concert(models.Model):
 
 
 class Location(models.Model):
-    id_number = models.IntegerField(primary_key=True)
+    id_number = models.IntegerField(primary_key=True, verbose_name='شماره شناسه')
     name = models.CharField(
         max_length=100,
-        verbose_name="Location Name",
-        help_text="Enter the name of the location",
+        verbose_name="نام مکان",
+        help_text="نام مکان را وارد کنید",
     )
     address = models.CharField(
         max_length=500,
         default="Iran-Tehran",
-        verbose_name="Address",
-        help_text="Enter the full address of the location",
+        verbose_name="آدرس",
+        help_text="آدرس کامل محل را وارد کنید",
     )
     phone = models.CharField(
         max_length=11,
         null=True,
-        verbose_name="Phone Number",
-        help_text="Enter a valid phone number",
+        verbose_name="شماره تلفن",
+        help_text="یک شماره تلفن معتبر وارد کنید",
     )
     capacity = models.IntegerField(
-        verbose_name="Capacity",
-        help_text="Maximum capacity of the location",
+        verbose_name="ظرفیت",
+        help_text="حداکثر ظرفیت محل",
         validators=[MinValueValidator(1)],
     )
     latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="Latitude", blank=True, null=True
+        max_digits=9, decimal_places=6, verbose_name="عرض جغرافیایی", blank=True, null=True
     )
     longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="Longitude", blank=True, null=True
+        max_digits=9, decimal_places=6, verbose_name="طول جغرافیایی", blank=True, null=True
     )
     website = models.URLField(
-        max_length=200, verbose_name="Website", blank=True, null=True
+        max_length=200, verbose_name="وب سایت", blank=True, null=True
     )
-    opening_time = models.TimeField(verbose_name="Opening Time", blank=True, null=True)
-    closing_time = models.TimeField(verbose_name="Closing Time", blank=True, null=True)
+    opening_time = models.TimeField(verbose_name="زمان افتتاحیه", blank=True, null=True)
+    closing_time = models.TimeField(verbose_name="زمان بسته شدن", blank=True, null=True)
 
     LOCATION_TYPE_CHOICES = [
-        ("restaurant", "Restaurant"),
-        ("shop", "Shop"),
-        ("service_center", "Service Center"),
+        ("restaurant", "رستوران"),
+        ("shop", "خرید کنید"),
+        ("service_center", "مرکز خدمات"),
+        ("concert", "کنسرت"),
     ]
 
     location_type = models.CharField(
-        max_length=50, choices=LOCATION_TYPE_CHOICES, verbose_name="Location Type"
+        max_length=50, choices=LOCATION_TYPE_CHOICES, verbose_name="نوع مکان"
     )
-    is_active = models.BooleanField(default=True, verbose_name="Is Active")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    is_active = models.BooleanField(default=True, verbose_name="فعال است")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="ایجاد شده در")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
     
     
     class Meta:
