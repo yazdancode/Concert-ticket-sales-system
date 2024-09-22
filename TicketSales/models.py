@@ -54,7 +54,7 @@ class Location(models.Model):
     )
     address = models.CharField(
         max_length=500,
-        default="Iran-Tehran",
+        default="ایران-تهران",
         verbose_name="آدرس",
         help_text="آدرس کامل محل را وارد کنید",
     )
@@ -106,57 +106,63 @@ class Location(models.Model):
 
 class TimeSlot(models.Model):
     concert = models.ForeignKey(
-        Concert, on_delete=models.PROTECT, verbose_name="Concert"
+        Concert, on_delete=models.PROTECT, verbose_name="کنسرت"
     )
     location = models.ForeignKey(
-        Location, on_delete=models.PROTECT, verbose_name="Location"
+        Location, on_delete=models.PROTECT, verbose_name="مکان"
     )
-    start_date_time = models.DateTimeField(verbose_name="Start Date and Time")
+    start_date_time = models.DateTimeField(verbose_name="تاریخ و زمان شروع")
     end_date_time = models.DateTimeField(
-        verbose_name="End Date and Time", blank=True, null=True
+        verbose_name="تاریخ و زمان پایان", blank=True, null=True
     )
     seats = models.IntegerField(
-        verbose_name="Number of Seats", validators=[MinValueValidator(1)]
+        verbose_name="تعداد صندلی", validators=[MinValueValidator(1)]
     )
     price_per_seat = models.DecimalField(
         max_digits=8,
         decimal_places=2,
-        verbose_name="Price per Seat",
+        verbose_name="قیمت هر صندلی",
         blank=True,
         null=True,
     )
     booked_seats = models.IntegerField(
-        verbose_name="Booked Seats", default=0, validators=[MinValueValidator(0)]
+        verbose_name="صندلی های رزرو شده", default=0, validators=[MinValueValidator(0)]
     )
-    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    is_active = models.BooleanField(default=True, verbose_name="فعال است")
 
     STATUS_CHOICES = [
-        ("Start", "Start"),
-        ("End", "End"),
-        ("Sales", "Sales"),
-        ("active", "Active"),
-        ("cancelled", "Cancelled"),
-        ("completed", "Completed"),
+        ("Start", "شروع کنید"),
+        ("End", "پایان"),
+        ("Sales", "فروش"),
+        ("active", "فعال"),
+        ("cancelled", "لغو شد"),
+        ("completed", "تکمیل شد"),
     ]
 
     status = models.CharField(
-        max_length=10, choices=STATUS_CHOICES, default="active", verbose_name="Status"
+        max_length=10, choices=STATUS_CHOICES, default="active", verbose_name="وضعیت"
     )
-    remarks = models.TextField(blank=True, null=True, verbose_name="Additional Remarks")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    remarks = models.TextField(blank=True, null=True, verbose_name="نکات تکمیلی")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="ایجاد شده در")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
+
+    class Meta:
+        verbose_name = 'اسلات زمان'
+        verbose_name_plural = 'اسلات زمان'
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
-            raise ValidationError("End date must be after the start date.")
+            raise ValidationError("تاریخ پایان باید بعد از تاریخ شروع باشد.")
 
     def save(self, *args, **kwargs):
         if not self.end_date_time:
             self.end_date_time = self.start_date_time + timedelta(
                 minutes=self.concert.length
             )
-        self.full_clean()  # Ensure the clean method is called
+        self.full_clean()
         super().save(*args, **kwargs)
+
+    
 
 
 class Profile(models.Model):
@@ -191,6 +197,10 @@ class Profile(models.Model):
         auto_now=True, verbose_name="تاریخ آخرین بروزرسانی"
     )
 
+    class Meta:
+        verbose_name = 'نمایه'
+        verbose_name_plural = 'نمایه'
+
     def __str__(self):
         return f"{self.name} {self.family} - {self.gender}"
 
@@ -200,20 +210,20 @@ class Ticket(models.Model):
         Profile,
         on_delete=models.PROTECT,
         related_name="tickets",
-        verbose_name="Profile",
+        verbose_name="نمایه",
     )
     timemodel = models.ForeignKey(
         TimeSlot,
         on_delete=models.PROTECT,
         related_name="tickets",
-        verbose_name="TimeSlot",
+        verbose_name="اسلات زمان",
     )
-    name = models.CharField(max_length=1000)
+    name = models.CharField(max_length=1000, verbose_name='نام')
     price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
         validators=[MinValueValidator(0)],
-        verbose_name="Ticket Price",
+        verbose_name="قیمت بلیط",
     )
     Ticket_picture = models.ImageField(
         upload_to="Ticket_pictures/", verbose_name="عکس پروفایل", null=True, blank=True
@@ -254,5 +264,8 @@ class Ticket(models.Model):
         blank=True, null=True, verbose_name="توضیحات اضافی"
     )
 
+    class Meta:
+        verbose_name = 'بلیط'
+        verbose_name_plural = 'بلیط'
     def __str__(self):
         return f"{self.name} - {self.profilemodel.name} {self.profilemodel.family} (${self.price})"
