@@ -27,26 +27,24 @@ class Concert(models.Model):
     ticket_price = models.DecimalField(
         max_digits=8, decimal_places=2, verbose_name="قیمت بلیط"
     )
-    description = models.TextField(
-        blank=True, null=True, verbose_name="توضیحات کنسرت"
-    )
+    description = models.TextField(blank=True, null=True, verbose_name="توضیحات کنسرت")
     ticket_status = models.CharField(
         max_length=10,
         choices=ConcertStatus.choices,
         default=ConcertStatus.AVAILABLE,
         verbose_name="وضعیت بلیط",
     )
-    
+
     class Meta:
         verbose_name = "کنسرت"
-        verbose_name_plural =  "کنسرت"
+        verbose_name_plural = "کنسرت"
 
     def __str__(self):
         return f"{self.name} by {self.singer_name} at {self.location}"
 
 
 class Location(models.Model):
-    id_number = models.IntegerField(primary_key=True, verbose_name='شماره شناسه')
+    id_number = models.IntegerField(primary_key=True, verbose_name="شماره شناسه")
     name = models.CharField(
         max_length=100,
         verbose_name="نام مکان",
@@ -70,10 +68,18 @@ class Location(models.Model):
         validators=[MinValueValidator(1)],
     )
     latitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="عرض جغرافیایی", blank=True, null=True
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="عرض جغرافیایی",
+        blank=True,
+        null=True,
     )
     longitude = models.DecimalField(
-        max_digits=9, decimal_places=6, verbose_name="طول جغرافیایی", blank=True, null=True
+        max_digits=9,
+        decimal_places=6,
+        verbose_name="طول جغرافیایی",
+        blank=True,
+        null=True,
     )
     website = models.URLField(
         max_length=200, verbose_name="وب سایت", blank=True, null=True
@@ -94,20 +100,17 @@ class Location(models.Model):
     is_active = models.BooleanField(default=True, verbose_name="فعال است")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="ایجاد شده در")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
-    
-    
+
     class Meta:
-        verbose_name = 'مکان'
-        verbose_name_plural = 'مکان'
+        verbose_name = "مکان"
+        verbose_name_plural = "مکان"
 
     def __str__(self):
         return self.name
 
 
 class TimeSlot(models.Model):
-    concert = models.ForeignKey(
-        Concert, on_delete=models.PROTECT, verbose_name="کنسرت"
-    )
+    concert = models.ForeignKey(Concert, on_delete=models.PROTECT, verbose_name="کنسرت")
     location = models.ForeignKey(
         Location, on_delete=models.PROTECT, verbose_name="مکان"
     )
@@ -147,8 +150,8 @@ class TimeSlot(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
 
     class Meta:
-        verbose_name = 'اسلات زمان'
-        verbose_name_plural = 'اسلات زمان'
+        verbose_name = "اسلات زمان"
+        verbose_name_plural = "اسلات زمان"
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
@@ -161,8 +164,6 @@ class TimeSlot(models.Model):
             )
         self.full_clean()
         super().save(*args, **kwargs)
-
-    
 
 
 class Profile(models.Model):
@@ -198,8 +199,8 @@ class Profile(models.Model):
     )
 
     class Meta:
-        verbose_name = 'نمایه'
-        verbose_name_plural = 'نمایه'
+        verbose_name = "نمایه"
+        verbose_name_plural = "نمایه"
 
     def __str__(self):
         return f"{self.name} {self.family} - {self.gender}"
@@ -218,7 +219,7 @@ class Ticket(models.Model):
         related_name="tickets",
         verbose_name="اسلات زمان",
     )
-    name = models.CharField(max_length=1000, verbose_name='نام')
+    name = models.CharField(max_length=1000, verbose_name="نام")
     price = models.DecimalField(
         max_digits=8,
         decimal_places=2,
@@ -265,7 +266,8 @@ class Ticket(models.Model):
     )
 
     class Meta:
-        verbose_name = 'بلیط'
-        verbose_name_plural = 'بلیط'
+        verbose_name = "بلیط"
+        verbose_name_plural = "بلیط"
+
     def __str__(self):
         return f"{self.name} - {self.profilemodel.name} {self.profilemodel.family} (${self.price})"

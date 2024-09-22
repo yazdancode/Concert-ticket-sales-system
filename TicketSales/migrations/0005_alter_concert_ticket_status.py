@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('TicketSales', '0004_alter_concert_location'),
+        ("TicketSales", "0004_alter_concert_location"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='concert',
-            name='ticket_status',
-            field=models.CharField(choices=[('موجود است', 'موجود است'), ('فروخته شد', 'فروخته شد'), ('لغو شد', 'لغو شد')], default='موجود است', max_length=10, verbose_name='وضعیت بلیط'),
+            model_name="concert",
+            name="ticket_status",
+            field=models.CharField(
+                choices=[
+                    ("موجود است", "موجود است"),
+                    ("فروخته شد", "فروخته شد"),
+                    ("لغو شد", "لغو شد"),
+                ],
+                default="موجود است",
+                max_length=10,
+                verbose_name="وضعیت بلیط",
+            ),
         ),
     ]

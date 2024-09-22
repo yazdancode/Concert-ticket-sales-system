@@ -7,32 +7,35 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('TicketSales', '0001_initial'),
+        ("TicketSales", "0001_initial"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='concert',
-            options={'verbose_name': 'کنسرت'},
+            name="concert",
+            options={"verbose_name": "کنسرت"},
         ),
         migrations.AlterField(
-            model_name='concert',
-            name='date',
-            field=models.DateTimeField(verbose_name='تاریخ و زمان کنسرت'),
+            model_name="concert",
+            name="date",
+            field=models.DateTimeField(verbose_name="تاریخ و زمان کنسرت"),
         ),
         migrations.AlterField(
-            model_name='concert',
-            name='length',
-            field=models.IntegerField(validators=[django.core.validators.MinValueValidator(1)], verbose_name='مدت کنسرت (دقیقه)'),
+            model_name="concert",
+            name="length",
+            field=models.IntegerField(
+                validators=[django.core.validators.MinValueValidator(1)],
+                verbose_name="مدت کنسرت (دقیقه)",
+            ),
         ),
         migrations.AlterField(
-            model_name='concert',
-            name='name',
-            field=models.CharField(max_length=100, verbose_name='نام کنسرت'),
+            model_name="concert",
+            name="name",
+            field=models.CharField(max_length=100, verbose_name="نام کنسرت"),
         ),
         migrations.AlterField(
-            model_name='concert',
-            name='singer_name',
-            field=models.CharField(max_length=100, verbose_name='نام خواننده'),
+            model_name="concert",
+            name="singer_name",
+            field=models.CharField(max_length=100, verbose_name="نام خواننده"),
         ),
     ]
