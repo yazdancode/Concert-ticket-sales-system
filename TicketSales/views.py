@@ -1,3 +1,10 @@
 from django.shortcuts import render
+from TicketSales.models import Concert
 
-# Create your views here.
+def ConcertListView(request):
+    concert = Concert.objects.all()
+    context = {
+        'concerts': concert,
+        'concertcount': concert.count(),
+    }
+    return render(request, 'TicketSales/concert_list.html', context)
