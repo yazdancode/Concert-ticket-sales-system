@@ -4,20 +4,20 @@
     لیست کنسرت‌ها
 {% endblock %}
 {% block mainContent %}
-    {% if concerts %}
+{% if concerts %}
     <div class="row">
         {% for concert in concerts %}
             <div class="col-sm-6 col-md-4 col-lg-2">
                 <a href="#">
                     <div class="imageBox">
-                        <img alt="{{ concert.name }}" src="{{ concert.Concert_picture.url }}">
+                        <img alt="{{ concert.singer_name }}" src="{{ concert.Concert_picture.url }}">
+                        <p>{{ concert.name }}</p>
                     </div>
                 </a>
             </div>
         {% endfor %}
-    </div>
+    </div> 
 {% else %}
     <p>هیچ کنسرتی موجود نیست.</p>
 {% endif %}
 {% endblock %}
-

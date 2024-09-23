@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سامانه فروش بلیط کنسرت</title>
+
+    <!-- Linking Bootstrap, FontAwesome, and custom styles -->
+    <link rel="stylesheet" type="text/css" href="{% static 'TicketSales/css/bootstrap.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'TicketSales/css/fontawesome.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'TicketSales/css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <div class="row box">
+            <h1>{% block titlepage %}{% endblock %}</h1>
+            <ul class="btnul">
+                <li><a  class="btn btn-success">پروفایل</a></li>
+                <li><a  class="btn btn-success">صفحه اصلی</a></li>
+            </ul>
+        </div>
+        <div class="row">
+            {% block mainContent %}{% endblock %}
+        </div>
+    </div>
+
+    <!-- Include Bootstrap JavaScript (optional for interactivity) -->
+    <script src="{% static 'TicketSales/js/bootstrap.bundle.js' %}"></script>
+    <script src="{% static 'TicketSales/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{% static 'TicketSales/js/fontawesome.js' %}"></script>
+    <script src="{% static 'TicketSales/js/main.js' %}"></script>
+</body>
+</html>
