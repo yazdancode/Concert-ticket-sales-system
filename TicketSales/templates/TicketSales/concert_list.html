@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -17,24 +17,27 @@
         <div class="row box">
             <h1>لیست کنسرت‌ها</h1>
             <ul class="btnul">
-                <li><a class="btn btn-success">پروفایل</a></li>
-                <li><a class="btn btn-success">صفحه اصلی</a></li>
+                <li><a  class="btn btn-success">پروفایل</a></li>
+                <li><a  class="btn btn-success">صفحه اصلی</a></li>
             </ul>
         </div>
         <div class="row">
-            {% if concertlist %}
-                {% for concert in concertlist  %}
-                    <div class="col-md-2">
-                       <a>
-                           <div class="imageBox">
-                               {{ concert }}
-                           </div>
-                       </a>
+            {% if concerts %}
+                {% for concert in concerts %}
+                    <div class="col-sm-6 col-md-4 col-lg-2">
+                        <a>
+                            <div class="imageBox">
+                                <img alt="{{ concert.name }}" src="{{ concert.Concert_picture.url }}" onerror="this.onerror=null;
+                                this.src='{% static 'TicketSales/img/Concert_pictures/Homayoun_Shajarian_-_Concert-e_Simorgh.jpg' %}';">
+                                {{ concert.name }}
+                            </div>
+                        </a>
                     </div>
                 {% endfor %}
-           {% endif %}
+            {% else %}
+                <p>هیچ کنسرتی موجود نیست.</p>
+            {% endif %}
         </div>
-
     </div>
 
     <!-- Include Bootstrap JavaScript (optional for interactivity) -->

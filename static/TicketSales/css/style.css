@@ -1,4 +1,7 @@
-p{
-    color: red;
-    font-size: 20px;
+body{
+    text-align: right;
+    direction: rtl;
+}
+.list-group-item{
+    text-align: right;
 }
