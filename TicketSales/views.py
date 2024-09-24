@@ -14,15 +14,9 @@ class ConcertListView(ListView):
         context['concertcount'] = self.get_queryset().count()
         return context
     
-def locationListView(request):
-    locations=Location.objects.all()
-    context={
-        "locationlist":locations,
-    }
-    return render(request, 'TicketSales/locationlist.html', context)
-    
-    
-    
-
+class LocationListView(ListView):
+    model = Location
+    template_name = 'TicketSales/locationlist.html'
+    context_object_name = 'locationlist'
 
 
