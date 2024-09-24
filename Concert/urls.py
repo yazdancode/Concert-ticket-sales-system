@@ -24,7 +24,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),  # Admin panel URL
     path('TicketSales/', include('TicketSales.urls')),  # Include URLs from the TicketSales app
 ]
-
-# Serve media files during development
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
