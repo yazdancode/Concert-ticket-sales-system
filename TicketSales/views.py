@@ -1,3 +1,5 @@
+from blib2to3.pytree import convert
+from django.shortcuts import render
 from django.views.generic import ListView
 from TicketSales.models import Concert, Location
 
@@ -12,11 +14,12 @@ class ConcertListView(ListView):
         context['concertcount'] = self.get_queryset().count()
         return context
     
-class LocationListView(ListView):
-    model = Location
-    template_name = 'TicketSales/locationlist.html'
-    context_object_name = 'locations'
-    paginate_by = 10
+def locationListView(request):
+    locations=Location.objects.all()
+    context={
+        "locationlist":locations,
+    }
+    return render(request, 'TicketSales/locationlist.html', context)
     
     
     
