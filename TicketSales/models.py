@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django.core.exceptions import ValidationError
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 
 
@@ -61,6 +61,12 @@ class Location(models.Model):
         null=True,
         verbose_name="شماره تلفن",
         help_text="یک شماره تلفن معتبر وارد کنید",
+        validators=[
+            RegexValidator(
+                regex=r"^\d{11}$",
+                message="شماره تلفن باید ۱۱ رقم باشد",
+            )
+        ],
     )
     capacity = models.IntegerField(
         verbose_name="ظرفیت",
@@ -73,6 +79,7 @@ class Location(models.Model):
         verbose_name="عرض جغرافیایی",
         blank=True,
         null=True,
+        validators=[MinValueValidator(-90.0), MaxValueValidator(90.0)],
     )
     longitude = models.DecimalField(
         max_digits=9,
@@ -80,9 +87,20 @@ class Location(models.Model):
         verbose_name="طول جغرافیایی",
         blank=True,
         null=True,
+        validators=[MinValueValidator(-180.0), MaxValueValidator(180.0)],
+    )
+    WEBSITE_STATUS_CHOICES = [
+        ("no_website", "وب‌سایت ندارد"),
+        ("has_website", "وب‌سایت دارد"),
+    ]
+    website_status = models.CharField(
+        max_length=20,
+        verbose_name="وضعیت وب‌سایت",
+        default="no_website",
+        choices=WEBSITE_STATUS_CHOICES,
     )
     website = models.URLField(
-        max_length=200, verbose_name="وب سایت", blank=True, null=True
+        max_length=200, verbose_name="وب‌سایت", blank=True, null=True
     )
     opening_time = models.TimeField(verbose_name="زمان افتتاحیه", blank=True, null=True)
     closing_time = models.TimeField(verbose_name="زمان بسته شدن", blank=True, null=True)
@@ -93,7 +111,6 @@ class Location(models.Model):
         ("service_center", "مرکز خدمات"),
         ("concert", "کنسرت"),
     ]
-
     location_type = models.CharField(
         max_length=50, choices=LOCATION_TYPE_CHOICES, verbose_name="نوع مکان"
     )
@@ -103,7 +120,19 @@ class Location(models.Model):
 
     class Meta:
         verbose_name = "مکان"
-        verbose_name_plural = "مکان"
+        verbose_name_plural = "مکان‌ها"
+
+    def clean(self):
+        if self.website_status == "has_website" and not self.website:
+            raise ValidationError("لطفاً آدرس وب‌سایت را وارد کنید.")
+        if self.website_status == "no_website" and self.website:
+            raise ValidationError(
+                "وقتی گزینه 'وب‌سایت ندارد' را انتخاب می‌کنید، نباید آدرس وب‌سایت وارد شود."
+            )
+        if not self.is_active and (self.opening_time or self.closing_time):
+            raise ValidationError(
+                "برای مکان‌های غیرفعال نیازی به زمان افتتاح و بسته شدن نیست."
+            )
 
     def __str__(self):
         return self.name
@@ -150,8 +179,8 @@ class TimeSlot(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
 
     class Meta:
-        verbose_name = "اسلات زمان"
-        verbose_name_plural = "اسلات زمان"
+        verbose_name = "سانس"
+        verbose_name_plural = "سانس"
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
