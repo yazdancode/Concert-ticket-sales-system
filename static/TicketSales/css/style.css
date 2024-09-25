@@ -1,61 +1,47 @@
-.imageBox {
-    margin: 10px;
-    background-color: whitesmoke;
-    text-align: center;
-    font-size: 15px;
-    border: 1px dashed green;
+/* Basic reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Main container for the concerts */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+/* Define fixed sizes for columns */
+.col-sm-6, .col-md-4, .col-lg-2 {
+    width: 16.66%; /* 2 columns per row */
     padding: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Image box styling */
+.imageBox {
+    border: 1px solid #ddd;
     border-radius: 5px;
+    overflow: hidden;
+    background-color: #f9f9f9;
 }
 
 .imageBox img {
     width: 100%;
     height: auto;
-    border-radius: 5px;
+    display: block;
 }
 
-.imageBox:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-.btnul {
-    list-style-type: none;
-    padding-left: 0;
-    margin-bottom: 20px;
-    text-align: right;
-}
-
-.btnul li {
-    display: inline-block;
-    margin-left: 10px;
-}
-.btn {
-    font-size: 16px;
-    padding: 10px 20px;
-    border-radius: 25px;
-}
-.container {
-    margin-top: 20px;
-}
-
-h1 {
+/* Style for when no concerts are available */
+p {
+    font-size: 18px;
+    color: #888;
     text-align: center;
-    font-family: 'Vazir', sans-serif;
-    margin-bottom: 30px;
-    color: darkgreen;
+    padding: 20px 0;
 }
-@media (max-width: 768px) {
-    .imageBox {
-        margin: 15px auto;
-    }
 
-    .btnul li {
-        margin-left: 0;
-        margin-top: 10px;
-    }
-
-    .btnul {
-        text-align: center;
-    }
+/* Optional styling for the anchor links */
+a {
+    text-decoration: none;
+    color: inherit;
 }

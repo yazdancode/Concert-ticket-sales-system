@@ -1,31 +1,38 @@
 {% extends 'TicketSales/base.html' %}
 {% load static %}
+
 {% block titlepage %}
     لیست کنسرت‌ها
 {% endblock %}
+
 {% block mainContent %}
-
-    <div class="row locationHeader">
-       <div class="col-md-3">
-           <h3>نام سالن </h3>
-       </div>
-       <div class="col-md-9">
-           <h3>آدرس</h3>
-       </div>
-    </div>
-
-    {% if locations %}
-        {% for location in locationlist %}
-            <div class="row location">
-               <div class="col-md-3">
-                   {{ location.name }}
-               </div>
-               <div class="col-md-9">
-                   {{ location.address }}
-               </div>
+    <div class="container">
+        <div class="row locationHeader">
+            <div class="col-md-3">
+                <h3>نام سالن</h3>
             </div>
-        {% endfor %}
-    {% else %}
-        <p>هیچ کنسرتی یافت نشد.</p>
-    {% endif %}
+            <div class="col-md-9">
+                <h3>آدرس</h3>
+            </div>
+        </div>
+
+        {% if locationlist %}
+            {% for location in locationlist %}
+                <div class="row location">
+                    <div class="col-md-3">
+                        {{ location.name }}
+                    </div>
+                    <div class="col-md-9">
+                        {{ location.address }}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    <p>هیچ کنسرتی برای نمایش موجود نیست.</p>
+                </div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

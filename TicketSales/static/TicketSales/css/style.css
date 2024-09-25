@@ -1,61 +1,112 @@
+body {
+    font-family: 'IranSans', sans-serif !important;
+}
+
+.box {
+    background-color: mediumturquoise;
+    padding-top: 40px;
+    text-align: center;
+}
+
 .imageBox {
-    margin: 10px;
+    margin: auto;
     background-color: whitesmoke;
     text-align: center;
     font-size: 15px;
     border: 1px dashed green;
-    padding: 10px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border-radius: 5px;
+    padding: 30px;
+    max-width: 400px;
 }
 
 .imageBox img {
     width: 100%;
     height: auto;
-    border-radius: 5px;
 }
 
-.imageBox:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
 .btnul {
     list-style-type: none;
     padding-left: 0;
-    margin-bottom: 20px;
-    text-align: right;
+    display: flex;
+    justify-content: center;
 }
 
 .btnul li {
-    display: inline-block;
     margin-left: 10px;
 }
-.btn {
-    font-size: 16px;
-    padding: 10px 20px;
-    border-radius: 25px;
+
+.location, .timeBox {
+    margin: 5px;
+    background-color: whitesmoke;
+    font-size: 15px;
+    border: 1px dashed green;
+    padding: 10px;
 }
-.container {
+
+.locationHeader {
+    display: flex;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-bottom: 2px solid #dee2e6;
+    color: green;
+}
+
+.locationHeader h3 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.default {
+    border: 1px solid gray;
+}
+
+.form {
     margin-top: 20px;
 }
 
-h1 {
-    text-align: center;
-    font-family: 'Vazir', sans-serif;
-    margin-bottom: 30px;
-    color: darkgreen;
+.mainborder {
+    border: 1px solid lightgray;
+    margin: 20px;
 }
-@media (max-width: 768px) {
-    .imageBox {
-        margin: 15px auto;
-    }
 
-    .btnul li {
-        margin-left: 0;
-        margin-top: 10px;
-    }
+.border {
+    background-color: whitesmoke;
+}
 
-    .btnul {
-        text-align: center;
-    }
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+p {
+    padding: 10px;
+}
+
+.mylable {
+    color: blue;
+    width: 100px;
+}
+
+.bottonborder {
+    background-color: lightgray;
+    direction: rtl;
+    margin: 20px;
+    padding: 10px;
+}
+
+.col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    color: #343a40;
+}
+
+.col-md-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+    color: #495057;
+}
+
+/* Optional: Add hover effect for better interaction */
+.locationHeader:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
 }
