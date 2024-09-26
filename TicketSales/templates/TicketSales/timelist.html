@@ -1,21 +1,91 @@
 {% extends 'TicketSales/base.html' %}
 {% load static %}
+
 {% block titlepage %}
     لیست سانس‌ها
 {% endblock %}
 
 {% block mainContent %}
+    <style>
+        .timeBox {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid #e7e7e7;
+        }
+        .timeBox:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+        .timeBox h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .timeBox p {
+            font-size: 16px;
+            color: #7f8c8d;
+            margin: 8px 0;
+        }
+        .timeBox .btn {
+            font-size: 14px;
+            padding: 10px 20px;
+            border-radius: 30px;
+            background-color: #27ae60;
+            color: #ffffff;
+            font-weight: bold;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+        .timeBox .btn:hover {
+            background-color: #2ecc71;
+        }
+        .col-md-2 {
+            margin-bottom: 30px;
+        }
+        @media (max-width: 768px) {
+            .col-md-2 {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            .timeBox {
+                padding: 15px;
+            }
+        }
+    </style>
+
     {% if timelist %}
     <div class="row">
         {% for time in timelist %}
-            <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="col-md-2">
                 <a href="#">
                     <div class="timeBox">
                        <h2>{{ time.concert.name }}</h2>
-                       <p>{{ time.concert.singer_name }}</p> 
+                       <p>{{ time.concert.singer_name }}</p>
                        <p>{{ time.concert.date }}</p>
                        <p>{{ time.location.address }}</p>
-                       <p>{{ time.concert.length }}</p> 
+                       <p>{{ time.concert.length }}</p>
+                       <div class="btn 
+                           {% if time.status == time.Start %}
+                               btn-success
+                           {% elif time.status == time.End %}
+                               btn-danger
+                           {% elif time.status == time.Sales %}
+                               btn-default
+                           {% elif time.status == time.active %}
+                               btn-primary
+                           {% elif time.status == time.cancelled %}
+                               btn-warning
+                           {% elif time.status == time.completed %}
+                               btn-info
+                           {% endif %}">
+                           {{ time.get_status_display }}
+                       </div>
                     </div>
                 </a>
             </div>
