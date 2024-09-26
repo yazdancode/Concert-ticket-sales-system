@@ -1,8 +1,6 @@
-from blib2to3.pytree import convert
-from django.views.generic.detail import DetailView
-from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
-from TicketSales.models import Concert, Location
+from django.views.generic.detail import DetailView
+from TicketSales.models import Concert, Location, TimeSlot
 
 
 class ConcertListView(ListView):
@@ -28,3 +26,9 @@ class ConcertDetailView(DetailView):
     template_name = "TicketSales/consert-detail.html"
     context_object_name = "concertdetails"
     pk_url_kwarg = "concert_id"
+
+
+class TimeListView(ListView):
+    model = TimeSlot
+    template_name = "TicketSales/timelist.html"
+    context_object_name = "timelist"

@@ -1,5 +1,10 @@
 from django.urls import path
-from TicketSales.views import ConcertListView, LocationListView, ConcertDetailView
+from TicketSales.views import (
+    ConcertListView,
+    LocationListView,
+    ConcertDetailView,
+    TimeListView,
+)
 
 urlpatterns = [
     path("concert/list/", ConcertListView.as_view(), name="concert"),
@@ -7,4 +12,5 @@ urlpatterns = [
     path(
         "concert/<int:concert_id>/", ConcertDetailView.as_view(), name="concert_detail"
     ),
+    path("time/list/", TimeListView.as_view(), name="time-list-view"),
 ]
