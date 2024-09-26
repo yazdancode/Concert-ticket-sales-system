@@ -1,6 +1,5 @@
 {% extends 'TicketSales/base.html' %}
 {% load static %}
-
 {% block titlepage %}
     لیست سانس‌ها
 {% endblock %}
@@ -10,14 +9,18 @@
     <div class="row">
         {% for time in timelist %}
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <a>
-                    <div>
-                        <p>{{ time.Concert.name }}</p>
+                <a href="#">
+                    <div class="timeBox">
+                       <h2>{{ time.concert.name }}</h2>
+                       <p>{{ time.concert.singer_name }}</p> 
+                       <p>{{ time.concert.date }}</p>
+                       <p>{{ time.location.address }}</p>
+                       <p>{{ time.concert.length }}</p> 
                     </div>
                 </a>
             </div>
         {% endfor %}
-    </div>    
+    </div>
     {% else %}
         <p>در حال حاضر کنسرتی موجود نیست.</p>
     {% endif %}
