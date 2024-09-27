@@ -1,8 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from TicketSales.models import Concert, Location, TimeSlot
+from accounts.views import CustomLoginView
+from django.urls import reverse
 
 
 class ConcertListView(ListView):
@@ -39,4 +41,4 @@ class TimeListView(LoginRequiredMixin, ListView):
         if self.request.user.is_authenticated and self.request.user.is_active:
             return TimeSlot.objects.all()
         else:
-            raise PermissionDenied("اجازه ورود به این صفحه را ندارید")
+            return HttpResponseRedirect(reverse(CustomLoginView))

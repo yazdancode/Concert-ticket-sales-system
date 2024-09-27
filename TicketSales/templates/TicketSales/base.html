@@ -18,8 +18,9 @@
             <h1>{% block titlepage %}{% endblock %}</h1>
             <ul class="btnul">
                 <li><a  class="btn btn-success">پروفایل</a></li>
-                <li><a  class="btn btn-success">صفحه اصلی</a></li>
-                <li><a class="btn btn-danger" href="/TicketSales/location/list/">اطلاعات محل</a></li>
+                <li><a  class="btn btn-success" href="{% url 'concert' %}">صفحه اصلی</a></li>
+                <li><a  class="btn btn-success" href="{% url 'time_list' %}">مشاهده کنسرت‌ها</a></li>
+                <li><a class="btn btn-danger" href="{% url 'location' %}">اطلاعات محل</a></li>
             </ul>
         </div>
         <div class="row">

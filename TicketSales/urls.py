@@ -12,5 +12,5 @@ urlpatterns = [
     path(
         "concert/<int:concert_id>/", ConcertDetailView.as_view(), name="concert_detail"
     ),
-    path("time/list/", TimeListView.as_view(), name="time-list-view"),
+    path("time/list/", TimeListView.as_view(), name="time_list"),
 ]

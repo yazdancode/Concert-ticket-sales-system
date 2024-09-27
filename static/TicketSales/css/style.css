@@ -1,47 +1,123 @@
-/* Basic reset */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+body {
+    font-family: 'IranSans', sans-serif !important;
 }
 
-/* Main container for the concerts */
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+.box {
+    background-color: mediumturquoise;
+    padding-top: 40px;
+    text-align: center;
 }
 
-/* Define fixed sizes for columns */
-.col-sm-6, .col-md-4, .col-lg-2 {
-    width: 16.66%; /* 2 columns per row */
-    padding: 10px;
-}
-
-/* Image box styling */
 .imageBox {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow: hidden;
-    background-color: #f9f9f9;
+    margin: auto;
+    background-color: whitesmoke;
+    text-align: center;
+    font-size: 15px;
+    border: 1px dashed green;
+    padding: 30px;
+    max-width: 400px;
 }
 
 .imageBox img {
     width: 100%;
     height: auto;
-    display: block;
 }
 
-/* Style for when no concerts are available */
+.btnul {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+}
+
+.btnul li {
+    margin-left: 10px;
+}
+
+.location, .timeBox {
+    margin: 5px;
+    background-color: whitesmoke;
+    font-size: 15px;
+    border: 1px dashed green;
+    padding: 10px;
+}
+
+.locationHeader {
+    background-color: whitesmoke;
+    margin: 5px;
+    text-align: right;
+    font-size: 15px;
+    border: 2px dashed green;
+    padding: 10px;
+    color: green;
+}
+
+.locationHeader h3 {
+    margin: 0;
+    font-weight: bold;
+}
+
+.default {
+    border: 1px solid gray;
+}
+
+.form {
+    margin-top: 20px;
+}
+
+.mainborder {
+    border: 1px solid lightgray;
+    margin: 20px;
+}
+
+.border {
+    background-color: whitesmoke;
+}
+
+.title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
 p {
-    font-size: 18px;
-    color: #888;
-    text-align: center;
-    padding: 20px 0;
+    padding: 10px;
 }
 
-/* Optional styling for the anchor links */
-a {
-    text-decoration: none;
-    color: inherit;
+.mylable {
+    color: blue;
+    width: 100px;
+}
+
+.bottonborder {
+    background-color: lightgray;
+    direction: rtl;
+    margin: 20px;
+    padding: 10px;
+}
+
+.col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    color: #343a40;
+}
+
+.col-md-9 {
+    flex: 0 0 75%;
+    max-width: 75%;
+    color: #495057;
+}
+
+/* Optional: Add hover effect for better interaction */
+.locationHeader:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.timeBox{
+    margin: 5px;
+    background-color: whitesmoke;
+    font-size: 15px;
+    border: 1px dashed green;
+    padding: 10px;
+    text-align: center;
 }

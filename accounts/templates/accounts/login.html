@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ورود کاربران</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/style.css' %}">
+</head>
+<body>
+    <div class="wrapper">
+        <form action="" method="POST">
+            {% csrf_token %}
+            <h1>ورود به سیستم</h1>
+            <p>{{ username }}:{{ errorMessage }}</p>
+            <div class="input-box">
+                <label for="username">نام کاربری</label>
+                <input type="text" name="username" id="username" placeholder="نام کاربری خود را وارد کنید" required>
+                <i class='bx bxs-user'></i>
+            </div>
+            <div class="input-box">
+                <label for="password">رمز عبور</label>
+                <input type="password" name="password" id="password" placeholder="رمز عبور خود را وارد کنید" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+            <div class="remember-forget">
+                <label>
+                    <input type="checkbox" name="remember_me"> مرا به خاطر بسپار
+                </label>
+                <a>رمز عبور را فراموش کرده‌اید?</a>
+            </div>
+            <button type="submit" class="btn">ورود</button>
+            <div class="register-link">
+                <p>حساب کاربری ندارید؟ <a>">ثبت نام کنید</a></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # new app TicketsalesConfig
     "TicketSales.apps.TicketsalesConfig",
+    "accounts.apps.AccountsConfig",
 ]
 
 JALALI_DATE_DEFAULTS = {
