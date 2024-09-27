@@ -42,6 +42,28 @@ INSTALLED_APPS = [
     "TicketSales.apps.TicketsalesConfig",
 ]
 
+JALALI_DATE_DEFAULTS = {
+    'Strftime': {  # Correct the typo here
+        'date': '%y/%m/%d',
+        'datetime': '%H:%M:%S _ %y/%m/%d',
+    },
+    'Static': {
+        'js': [
+            # loading datepicker
+            'admin/js/django_jalali.min.js'
+        ],
+        'css': {
+            'all': [
+                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+            ]
+        }
+    }
+}
+
+
+
+
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

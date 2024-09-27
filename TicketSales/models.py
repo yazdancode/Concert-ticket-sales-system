@@ -2,6 +2,8 @@ from datetime import timedelta
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
+from jalali_date import date2jalali, datetime2jalali
+from decimal import Decimal
 
 
 class ConcertStatus(models.TextChoices):
@@ -140,9 +142,7 @@ class Location(models.Model):
 
 class TimeSlot(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.PROTECT, verbose_name="کنسرت")
-    location = models.ForeignKey(
-        Location, on_delete=models.PROTECT, verbose_name="مکان"
-    )
+    location = models.ForeignKey(Location, on_delete=models.PROTECT, verbose_name="مکان")
     start_date_time = models.DateTimeField(verbose_name="تاریخ و زمان شروع")
     end_date_time = models.DateTimeField(
         verbose_name="تاریخ و زمان پایان", blank=True, null=True
@@ -158,14 +158,14 @@ class TimeSlot(models.Model):
         null=True,
     )
     booked_seats = models.IntegerField(
-        verbose_name="صندلی های رزرو شده", default=0, validators=[MinValueValidator(0)]
+        verbose_name="صندلی‌های رزرو شده", default=0, validators=[MinValueValidator(0)]
     )
     is_active = models.BooleanField(default=True, verbose_name="فعال است")
 
     STATUS_CHOICES = [
-        ("Start", "شروع کنید"),
-        ("End", "پایان"),
-        ("Sales", "فروش"),
+        ("start", "شروع کنید"),
+        ("end", "پایان"),
+        ("sales", "فروش"),
         ("active", "فعال"),
         ("cancelled", "لغو شد"),
         ("completed", "تکمیل شد"),
@@ -176,23 +176,31 @@ class TimeSlot(models.Model):
     )
     remarks = models.TextField(blank=True, null=True, verbose_name="نکات تکمیلی")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="ایجاد شده در")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="به روز شده در")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="به‌روز شده در")
 
     class Meta:
         verbose_name = "سانس"
-        verbose_name_plural = "سانس"
+        verbose_name_plural = "سانس‌ها"
+        ordering = ['-start_date_time', 'end_date_time']
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
             raise ValidationError("تاریخ پایان باید بعد از تاریخ شروع باشد.")
+        if self.booked_seats > self.seats:
+            raise ValidationError("صندلی‌های رزرو شده نمی‌تواند بیشتر از تعداد صندلی‌ها باشد.")
 
     def save(self, *args, **kwargs):
         if not self.end_date_time:
-            self.end_date_time = self.start_date_time + timedelta(
-                minutes=self.concert.length
-            )
+            self.end_date_time = self.start_date_time + timedelta(minutes=self.concert.length)
+        if self.price_per_seat is None:
+            self.price_per_seat = Decimal('0.00')  # مقدار پیش‌فرض برای قیمت
         self.full_clean()
         super().save(*args, **kwargs)
+
+    def get_jalai_date(self):
+        return datetime2jalali(self.start_date_time), datetime2jalali(self.end_date_time)
+
+
 
 
 class Profile(models.Model):
