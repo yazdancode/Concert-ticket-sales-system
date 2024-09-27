@@ -1,9 +1,10 @@
 from datetime import timedelta
+from decimal import Decimal
+
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
-from jalali_date import date2jalali, datetime2jalali
-from decimal import Decimal
+from jalali_date import date2jalali
 
 
 class ConcertStatus(models.TextChoices):
@@ -125,7 +126,7 @@ class Location(models.Model):
         verbose_name_plural = "مکان‌ها"
 
     def clean(self):
-        if self.website_status == "has_website" and not self.website:
+        if self.website_status == "website" and not self.website:
             raise ValidationError("لطفاً آدرس وب‌سایت را وارد کنید.")
         if self.website_status == "no_website" and self.website:
             raise ValidationError(
@@ -142,7 +143,9 @@ class Location(models.Model):
 
 class TimeSlot(models.Model):
     concert = models.ForeignKey(Concert, on_delete=models.PROTECT, verbose_name="کنسرت")
-    location = models.ForeignKey(Location, on_delete=models.PROTECT, verbose_name="مکان")
+    location = models.ForeignKey(
+        Location, on_delete=models.PROTECT, verbose_name="مکان"
+    )
     start_date_time = models.DateTimeField(verbose_name="تاریخ و زمان شروع")
     end_date_time = models.DateTimeField(
         verbose_name="تاریخ و زمان پایان", blank=True, null=True
@@ -181,26 +184,28 @@ class TimeSlot(models.Model):
     class Meta:
         verbose_name = "سانس"
         verbose_name_plural = "سانس‌ها"
-        ordering = ['-start_date_time', 'end_date_time']
+        ordering = ["-start_date_time", "-end_date_time"]
 
     def clean(self):
         if self.end_date_time and self.start_date_time >= self.end_date_time:
             raise ValidationError("تاریخ پایان باید بعد از تاریخ شروع باشد.")
         if self.booked_seats > self.seats:
-            raise ValidationError("صندلی‌های رزرو شده نمی‌تواند بیشتر از تعداد صندلی‌ها باشد.")
+            raise ValidationError(
+                "صندلی‌های رزرو شده نمی‌تواند بیشتر از تعداد صندلی‌ها باشد."
+            )
 
     def save(self, *args, **kwargs):
         if not self.end_date_time:
-            self.end_date_time = self.start_date_time + timedelta(minutes=self.concert.length)
+            self.end_date_time = self.start_date_time + timedelta(
+                minutes=self.concert.length
+            )
         if self.price_per_seat is None:
-            self.price_per_seat = Decimal('0.00')  # مقدار پیش‌فرض برای قیمت
+            self.price_per_seat = Decimal("0.00")
         self.full_clean()
         super().save(*args, **kwargs)
 
     def get_jalai_date(self):
-        return datetime2jalali(self.start_date_time), datetime2jalali(self.end_date_time)
-
-
+        return date2jalali(self.start_date_time), date2jalali(self.end_date_time)
 
 
 class Profile(models.Model):

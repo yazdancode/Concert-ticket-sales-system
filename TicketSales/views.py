@@ -1,3 +1,5 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from TicketSales.models import Concert, Location, TimeSlot
@@ -28,7 +30,13 @@ class ConcertDetailView(DetailView):
     pk_url_kwarg = "concert_id"
 
 
-class TimeListView(ListView):
+class TimeListView(LoginRequiredMixin, ListView):
     model = TimeSlot
     template_name = "TicketSales/timelist.html"
     context_object_name = "timelist"
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated and self.request.user.is_active:
+            return TimeSlot.objects.all()
+        else:
+            raise PermissionDenied("اجازه ورود به این صفحه را ندارید")
