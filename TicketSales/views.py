@@ -3,7 +3,8 @@ from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from TicketSales.models import Concert, Location, TimeSlot
-from accounts.views import CustomLoginView
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 
@@ -12,6 +13,10 @@ class ConcertListView(ListView):
     template_name = "TicketSales/concert_list.html"
     context_object_name = "concerts"
     paginate_by = 10
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -37,8 +42,12 @@ class TimeListView(LoginRequiredMixin, ListView):
     template_name = "TicketSales/timelist.html"
     context_object_name = "timelist"
 
-    def get_queryset(self):
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
         if self.request.user.is_authenticated and self.request.user.is_active:
-            return TimeSlot.objects.all()
+            return super().dispatch(*args, **kwargs)
         else:
-            return HttpResponseRedirect(reverse(CustomLoginView))
+            return HttpResponseRedirect(reverse("custom_login"))
+
+    def get_queryset(self):
+        return TimeSlot.objects.all()

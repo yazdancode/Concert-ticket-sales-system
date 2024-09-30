@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/style_profile.css' %}">
+</head>
+<body>
+<div class="row">
+    <div class="col-md-8">
+        <p>نام و نام خانوادگی:{{ profile.user }}</p>
+        <p>:جنسیت{{ profile.gender }}</p>
+        <p>:تاریخ تولد</p>
+        <p>ایمیل:</p>
+        <p>شماره تلفن:</p>
+        <p>بیوگرافی:</p>
+        <p>آدرس:</p>
+        <p>مقدار اعتبار:{{ profile.Credit }}</p>
+    </div>
+    <div class="col-md-4">
+        <img src="{{ profile.profile_picture.url }}" alt="">
+    </div>
+</div>
+</body>
+</html>

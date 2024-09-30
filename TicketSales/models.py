@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
 from jalali_date import date2jalali
+from accounts.models import Profile
 
 
 class ConcertStatus(models.TextChoices):
@@ -206,46 +207,6 @@ class TimeSlot(models.Model):
 
     def get_jalai_date(self):
         return date2jalali(self.start_date_time), date2jalali(self.end_date_time)
-
-
-class Profile(models.Model):
-    name = models.CharField(max_length=100, verbose_name="نام")
-    family = models.CharField(max_length=100, verbose_name="نام خانوادگی")
-
-    STATUS_CHOICES = [
-        ("Man", "مرد"),
-        ("Woman", "زن"),
-    ]
-
-    gender = models.CharField(
-        max_length=6,
-        choices=STATUS_CHOICES,
-        verbose_name="جنسیت",
-    )
-
-    birth_date = models.DateField(verbose_name="تاریخ تولد", null=True, blank=True)
-    email = models.EmailField(verbose_name="آدرس ایمیل", unique=True, max_length=100)
-    phone_number = models.CharField(
-        max_length=15, verbose_name="شماره تلفن", null=True, blank=True
-    )
-    profile_picture = models.ImageField(
-        upload_to="profile_pictures/", verbose_name="عکس پروفایل", null=True, blank=True
-    )
-    bio = models.TextField(verbose_name="بیوگرافی", blank=True, max_length=255)
-    address = models.CharField(
-        max_length=255, verbose_name="آدرس", null=True, blank=True
-    )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت‌ نام")
-    updated_at = models.DateTimeField(
-        auto_now=True, verbose_name="تاریخ آخرین بروزرسانی"
-    )
-
-    class Meta:
-        verbose_name = "نمایه"
-        verbose_name_plural = "نمایه"
-
-    def __str__(self):
-        return f"{self.name} {self.family} - {self.gender}"
 
 
 class Ticket(models.Model):
