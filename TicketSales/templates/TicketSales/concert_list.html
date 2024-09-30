@@ -8,6 +8,10 @@
 {% block mainContent %}
     {% if concerts %}
     <div class="row">
+    <form action="" method="GET">
+        {{ searchform }}
+        <button type="submit">جستجو</button>
+    </form>
         {% for concert in concerts %}
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <a href="{% url 'concert_detail' concert.id %}">

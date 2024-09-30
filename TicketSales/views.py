@@ -1,11 +1,13 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
+
+from TicketSales.forms import SearchForm
 from TicketSales.models import Concert, Location, TimeSlot
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
-from django.urls import reverse
 
 
 class ConcertListView(ListView):
@@ -20,7 +22,17 @@ class ConcertListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        request = self.request
         context["concertcount"] = self.get_queryset().count()
+        searchform = SearchForm(request.GET)
+        context["searchform"] = searchform
+
+        if searchform.is_valid():
+            search_text = searchform.cleaned_data["SearchText"]
+            concerts = Concert.objects.filter(name__icontains=search_text)
+        else:
+            concerts = Concert.objects.all()
+        context["concerts"] = concerts
         return context
 
 
