@@ -1,20 +1,20 @@
 from django.urls import path
-from TicketSales.views import (
+from .views import (
     ConcertListView,
-    LocationListView,
     ConcertDetailView,
-    TimeListView,
     ConcertEditView,
+    LocationListView,
+    TimeListView,
 )
 
 urlpatterns = [
-    path("concert/list/", ConcertListView.as_view(), name="concert"),
-    path("location/list/", LocationListView.as_view(), name="location"),
+    path("concerts/", ConcertListView.as_view(), name="concert_list"),
     path(
-        "concert/<int:concert_id>/", ConcertDetailView.as_view(), name="concert_detail"
+        "concerts/<int:concert_id>/", ConcertDetailView.as_view(), name="concert_detail"
     ),
-    path("time/list/", TimeListView.as_view(), name="time_list"),
     path(
-        "concert_Form/<int:concert_id>/", ConcertEditView.as_view(), name="concert_Form"
-    ),
+        "concerts/<int:pk>/edit/", ConcertEditView.as_view(), name="concert_edit"
+    ),  # Pass pk for editing
+    path("locations/", LocationListView.as_view(), name="location_list"),
+    path("timeslots/", TimeListView.as_view(), name="time_list"),
 ]

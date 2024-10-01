@@ -8,21 +8,22 @@
 {% block mainContent %}
     {% if concerts %}
     <div class="row">
-    <form action="" method="GET">
-        {{ searchform }}
-        <button type="submit">جستجو</button>
-    </form>
+        <form action="" method="GET">
+            {% csrf_token %}
+            {{ searchform.as_p }}
+            <button type="submit">جستجو</button>
+        </form>
         {% for concert in concerts %}
-            <div class="col-sm-6 col-md-4 col-lg-3">
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
                 <a href="{% url 'concert_detail' concert.id %}">
                     <div class="imageBox">
-                        <img src="{{ concert.Concert_picture.url }}" alt="{{ concert.name }}" class="img-fluid">
+                        <img src="{{ concert.Concert_picture.url }}" alt="{{ concert.name }}">  <!-- استفاده از نقل قول -->
                         <p>{{ concert.name }}</p>
                     </div>
                 </a>
             </div>
         {% endfor %}
-    </div>    
+    </div>
     {% else %}
         <p>در حال حاضر کنسرتی موجود نیست.</p>
     {% endif %}

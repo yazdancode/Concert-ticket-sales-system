@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib import messages
 from django.shortcuts import get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import ListView, UpdateView, DetailView
+from django.urls import reverse
+from django.views.generic import ListView, DetailView
+from django.views.generic import UpdateView
+
 from TicketSales.forms import SearchForm, ConcertForm
 from TicketSales.models import Concert, Location, TimeSlot
 
@@ -13,19 +14,21 @@ class ConcertListView(LoginRequiredMixin, ListView):
     context_object_name = "concerts"
     paginate_by = 10
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        request = self.request
-        context["concertcount"] = self.get_queryset().count()
-        searchform = SearchForm(request.GET)
-        context["searchform"] = searchform
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        searchform = SearchForm(self.request.GET)
 
         if searchform.is_valid():
-            search_text = searchform.cleaned_data["SearchText"]
-            concerts = Concert.objects.filter(name__icontains=search_text)
-        else:
-            concerts = Concert.objects.all()
-        context["concerts"] = concerts
+            search_text = searchform.cleaned_data.get("SearchText")
+            if search_text:
+                queryset = queryset.filter(name__icontains=search_text)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concertcount"] = self.get_queryset().count()
+        context["searchform"] = SearchForm(self.request.GET)
         return context
 
 
@@ -37,12 +40,18 @@ class LocationListView(ListView):
 
 class ConcertDetailView(DetailView):
     model = Concert
-    template_name = "TicketSales/consert_detail.html"
+    template_name = "TicketSales/consert_detail.html"  # اصلاح نام فایل
     context_object_name = "concertdetails"
     pk_url_kwarg = "concert_id"
 
     def get_object(self, queryset=None):
-        return get_object_or_404(Concert, id=self.kwargs["concert_id"])
+        concert_id = self.kwargs["concert_id"]
+        return get_object_or_404(Concert, id=concert_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concert_id"] = self.object.id  # Add concert_id to context
+        return context
 
 
 class TimeListView(LoginRequiredMixin, ListView):
@@ -54,16 +63,15 @@ class TimeListView(LoginRequiredMixin, ListView):
         return TimeSlot.objects.all()
 
 
-class ConcertEditView(LoginRequiredMixin, UpdateView):
+class ConcertEditView(UpdateView):
     model = Concert
     form_class = ConcertForm
     template_name = "TicketSales/concert_edit.html"
-    success_url = reverse_lazy("concert")
 
-    def get_object(self, queryset=None):
-        concert_id = self.kwargs["concert_id"]
-        return get_object_or_404(Concert, id=concert_id)
+    def get_success_url(self):
+        return reverse("concert_list")
 
-    def form_valid(self, form):
-        messages.success(self.request, "Concert updated successfully!")
-        return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["concertForm"] = self.get_form()
+        return context

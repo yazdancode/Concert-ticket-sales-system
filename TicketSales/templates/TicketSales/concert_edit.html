@@ -1,27 +1,75 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ویرایش کنسرت</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">  <!-- Include Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light background */
+            font-family: 'Arial', sans-serif; /* Change font family */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+        }
+
+        h1 {
+            text-align: center; /* Center the title */
+            margin: 20px 0; /* Margin above and below the title */
+            color: #343a40; /* Dark color for the heading */
+            font-size: 2.5rem; /* Larger font size for the title */
+        }
+
+        .container {
+            max-width: 600px; /* Set a max width for the container */
+            margin: 50px auto; /* Center the container with top margin */
+            padding: 30px; /* Padding inside the container */
+            background-color: #fff; /* White background for the form */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+        }
+
+        .form-group label {
+            font-weight: bold; /* Bold labels */
+            color: #495057; /* Darker color for labels */
+        }
+
+        .btn-success {
+            width: 100%; /* Full width button */
+            padding: 10px; /* Padding inside the button */
+            font-size: 16px; /* Larger font size */
+            background-color: #28a745; /* Bootstrap success color */
+            border: none; /* No border */
+            border-radius: 5px; /* Rounded corners for the button */
+            transition: background-color 0.3s ease; /* Smooth transition */
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .errorlist {
+            color: #dc3545;
+            font-size: 0.9em;
+        }
+
+        .non-field-errors {
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <h1>ویرایش کنسرت</h1>
     <form action="" method="POST">
-        {% csrf_token %}  <!-- Add CSRF token for security -->
-        {{ form.non_field_errors }}  <!-- Display non-field errors -->
-        
-        {% for field in form %}
-            <div class="form-group">
-                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}  <!-- Render each field -->
-                {{ field.errors }}  <!-- Display errors for the specific field -->
-            </div>
+        {% csrf_token %}
+        {{ concertForm.as_p }}
+        {% for error in concertForm.non_field_errors %}
+            <div class="non-field-errors">{{ error }}</div>
         {% endfor %}
-        
-        <button type="submit" class="btn btn-success">ذخیره</button>
+
+        <button type="submit" class="btn-success">ذخیره</button>
     </form>
 </div>
 </body>

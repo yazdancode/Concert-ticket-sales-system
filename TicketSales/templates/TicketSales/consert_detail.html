@@ -13,6 +13,7 @@
         <div class="imageBox">
             <img src="{{ concertdetails.Concert_picture.url }}" alt="">
         </div>
-        <a href="{% url 'concert_Form' concertdetails.pk %}" class="btn-success">ویرایش</a>
+        <a href="{% url 'concert_edit' concertdetails.id %}" class="btn-success">ویرایش</a>
+
     </div>
 {% endblock %}
