@@ -4,6 +4,7 @@ from TicketSales.views import (
     LocationListView,
     ConcertDetailView,
     TimeListView,
+    ConcertEditView,
 )
 
 urlpatterns = [
@@ -13,4 +14,7 @@ urlpatterns = [
         "concert/<int:concert_id>/", ConcertDetailView.as_view(), name="concert_detail"
     ),
     path("time/list/", TimeListView.as_view(), name="time_list"),
+    path(
+        "concert_Form/<int:concert_id>/", ConcertEditView.as_view(), name="concert_Form"
+    ),
 ]
