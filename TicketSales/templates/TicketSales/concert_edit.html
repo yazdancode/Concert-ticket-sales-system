@@ -4,73 +4,103 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ویرایش کنسرت</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa; /* Light background */
-            font-family: 'Arial', sans-serif; /* Change font family */
-            margin: 0; /* Remove default margin */
-            padding: 0; /* Remove default padding */
+            font-family: 'IRANSans', Tahoma, sans-serif;
+            direction: rtl;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
         }
-
-        h1 {
-            text-align: center; /* Center the title */
-            margin: 20px 0; /* Margin above and below the title */
-            color: #343a40; /* Dark color for the heading */
-            font-size: 2.5rem; /* Larger font size for the title */
-        }
-
         .container {
-            max-width: 600px; /* Set a max width for the container */
-            margin: 50px auto; /* Center the container with top margin */
-            padding: 30px; /* Padding inside the container */
-            background-color: #fff; /* White background for the form */
-            border-radius: 8px; /* Rounded corners */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .form-group label {
-            font-weight: bold; /* Bold labels */
-            color: #495057; /* Darker color for labels */
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 700;
+            border-bottom: 3px solid #28a745;
+            display: inline-block;
+            padding-bottom: 10px;
         }
-
-        .btn-success {
-            width: 100%; /* Full width button */
-            padding: 10px; /* Padding inside the button */
-            font-size: 16px; /* Larger font size */
-            background-color: #28a745; /* Bootstrap success color */
-            border: none; /* No border */
-            border-radius: 5px; /* Rounded corners for the button */
-            transition: background-color 0.3s ease; /* Smooth transition */
+        .mylable {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 15px;
+            font-weight: 500;
+            display: block;
+            padding: 10px 15px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
         }
-
-        .btn-success:hover {
-            background-color: #218838;
-        }
-
-        .errorlist {
-            color: #dc3545;
-            font-size: 0.9em;
-        }
-
-        .non-field-errors {
-            color: #dc3545;
+        .mainborder {
+            border: 1px solid #dee2e6;
+            padding: 30px;
+            border-radius: 10px;
             margin-bottom: 20px;
+            background-color: #fafafa;
+        }
+        .bottonborder {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            width: 160px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        button:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        @media (max-width: 768px) {
+            .col-md-6 {
+                margin-bottom: 20px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            button {
+                width: 100%;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>ویرایش کنسرت</h1>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{ concertForm.as_p }}
-        {% for error in concertForm.non_field_errors %}
-            <div class="non-field-errors">{{ error }}</div>
-        {% endfor %}
-
-        <button type="submit" class="btn-success">ذخیره</button>
-    </form>
+    <div class="mainborder">
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mylable">نام کنسرت: {{ concert.name }}</p>
+                <p class="mylable">نام خواننده: {{ concert.singer_name }}</p>
+                <p class="mylable">مدت کنسرت (دقیقه): {{ concert.length }}</p>
+            </div>
+            <div class="col-md-6">
+                {{ concert.Concert_picture }}
+            </div>
+        </div>
+    </div>
+    <div class="bottonborder">
+        <button type="submit" class="btn btn-success">ذخیره</button>
+    </div>
 </div>
 </body>
 </html>
