@@ -30,26 +30,29 @@
             text-align: center;
             font-weight: 700;
             border-bottom: 3px solid #28a745;
-            display: inline-block;
             padding-bottom: 10px;
         }
-        .mylable {
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
             font-size: 18px;
             color: #555;
-            margin-bottom: 15px;
             font-weight: 500;
-            display: block;
-            padding: 10px 15px;
-            background-color: #f7f7f7;
-            border-radius: 8px;
-            box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
         }
-        .mainborder {
-            border: 1px solid #dee2e6;
-            padding: 30px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            background-color: #fafafa;
+        input[type="text"], input[type="file"], input[type="number"] {
+            border-radius: 8px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+            width: 100%;
+            transition: border-color 0.3s ease-in-out;
+        }
+        input[type="text"]:focus, input[type="file"]:focus, input[type="number"]:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+        .alert {
+            margin-top: 10px;
         }
         .bottonborder {
             text-align: center;
@@ -71,9 +74,6 @@
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
         @media (max-width: 768px) {
-            .col-md-6 {
-                margin-bottom: 20px;
-            }
             h1 {
                 font-size: 24px;
             }
@@ -81,26 +81,72 @@
                 width: 100%;
             }
         }
+        .image-preview {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .image-preview img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>ویرایش کنسرت</h1>
-    <div class="mainborder">
-        <div class="row">
-            <div class="col-md-6">
-                <p class="mylable">نام کنسرت: {{ concert.name }}</p>
-                <p class="mylable">نام خواننده: {{ concert.singer_name }}</p>
-                <p class="mylable">مدت کنسرت (دقیقه): {{ concert.length }}</p>
-            </div>
-            <div class="col-md-6">
-                {{ concert.Concert_picture }}
-            </div>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="{{ form.name.id_for_label }}">نام کنسرت:</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+                <div class="alert alert-danger">
+                    {{ form.name.errors }}
+                </div>
+            {% endif %}
         </div>
-    </div>
-    <div class="bottonborder">
-        <button type="submit" class="btn btn-success">ذخیره</button>
-    </div>
+
+        <div class="form-group">
+            <label for="{{ form.singer_name.id_for_label }}">نام خواننده:</label>
+            {{ form.singer_name }}
+            {% if form.singer_name.errors %}
+                <div class="alert alert-danger">
+                    {{ form.singer_name.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.length.id_for_label }}">مدت زمان:</label>
+            {{ form.length }}
+            {% if form.length.errors %}
+                <div class="alert alert-danger">
+                    {{ form.length.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.Concert_picture.id_for_label }}">عکس کنسرت:</label>
+            {{ form.Concert_picture }}
+            {% if form.Concert_picture.errors %}
+                <div class="alert alert-danger">
+                    {{ form.Concert_picture.errors }}
+                </div>
+            {% endif %}
+        </div>
+
+        {% if concert.Concert_picture %}
+            <div class="image-preview">
+                <img src="{{ concert.Concert_picture.url }}" alt="عکس کنسرت">
+            </div>
+        {% endif %}
+
+        <div class="bottonborder">
+            <button type="submit" class="btn btn-success">ذخیره</button>
+        </div>
+    </form>
 </div>
 </body>
 </html>
