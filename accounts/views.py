@@ -5,8 +5,8 @@ from django.http import HttpResponseRedirect
 from django.views.generic import DetailView
 from django.urls import reverse_lazy
 from django.views.generic import FormView, RedirectView
-from .forms import LoginForm
-from django.shortcuts import get_object_or_404
+from .forms import LoginForm, ProfileRegisterForm
+from django.shortcuts import get_object_or_404, render
 from accounts.models import Profile
 
 
@@ -34,7 +34,7 @@ class CustomLoginView(FormView):
 
 
 class CustomLogoutView(RedirectView):
-    url = reverse_lazy("concert")
+    url = reverse_lazy("concert_list")
 
     def get(self, request, *args, **kwargs):
         logout(request)
@@ -48,3 +48,12 @@ class ProfileView(LoginRequiredMixin, DetailView):
 
     def get_object(self, **kwargs):
         return get_object_or_404(Profile, user=self.request.user)
+
+
+def ProfileRegisterView(request):
+    if request.method == "POST":
+        profileregisterform = ProfileRegisterForm(request.POST, request.FILES)
+        if profileregisterform.is_valid():
+            pass
+
+    return render(request, "accounts/profileRegister.html")
