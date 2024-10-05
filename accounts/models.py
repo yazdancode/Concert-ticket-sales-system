@@ -32,7 +32,7 @@ class Profile(models.Model):
     address = models.CharField(
         max_length=255, verbose_name="آدرس", null=True, blank=True
     )
-    Credit = models.IntegerField(verbose_name="اعتبار", default=0)
+    credit = models.IntegerField(verbose_name="اعتبار", default=0)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="تاریخ ثبت‌ نام")
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="تاریخ آخرین بروزرسانی"

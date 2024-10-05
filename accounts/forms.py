@@ -4,10 +4,16 @@ from accounts.models import Profile
 
 class LoginForm(forms.Form):
     username = forms.CharField(
-        label="نام کاربری",
-        max_length=100,
+        label="لطفاً نام خود را وارد کنید",
+        max_length=256,
         widget=forms.TextInput(
-            attrs={"class": "form-group", "placeholder": "نام کاربری"}
+            attrs={
+                "type": "text",
+                "name": "username",
+                "class": "form-group",
+                "maxlength": "256",
+                "required id": "id_username",
+            }
         ),
     )
     password = forms.CharField(
@@ -51,7 +57,7 @@ class ProfileRegisterForm(forms.ModelForm):
 
     class Meta:
         model = Profile
-        fields = ["Credit", "gender", "profile_picture"]
+        fields = ["credit", "gender", "profile_picture"]
 
     def __init__(self, *args, **kwargs):
         super(ProfileRegisterForm, self).__init__(*args, **kwargs)

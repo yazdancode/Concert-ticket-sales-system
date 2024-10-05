@@ -10,67 +10,104 @@
 </head>
 <body>
 
-<div class="form-container">
-    <form action="{% url 'profile-register' %}" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="form-group">
-            <label for="first_name">نام:</label>
-            <input type="text" id="first_name" name="first_name" class="form-control" placeholder="نام">
-            <div class="alert alert-danger" style="display: none;">لطفاً نام خود را وارد کنید.</div>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">فرم ثبت‌نام</h3>
+                    <form action="{% url 'profile-register' %}" method="POST" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <!-- Submit Button -->
+                        <button type="submit" class="btn btn-success btn-block">ثبت‌نام</button>
+                    </form>
+                </div>
+            </div>
         </div>
-
-        <div class="form-group">
-            <label for="last_name">نام خانوادگی:</label>
-            <input type="text" id="last_name" name="last_name" class="form-control" placeholder="نام خانوادگی">
-            <div class="alert alert-danger" style="display: none;">لطفاً نام خانوادگی خود را وارد کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="gender">جنسیت:</label>
-            <select id="gender" name="gender" class="form-control">
-                <option value="">انتخاب کنید</option>
-                <option value="male">مرد</option>
-                <option value="female">زن</option>
-            </select>
-            <div class="alert alert-danger" style="display: none;">لطفاً جنسیت خود را انتخاب کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="credit">اعتبار:</label>
-            <input type="number" id="credit" name="credit" class="form-control" placeholder="اعتبار">
-            <div class="alert alert-danger" style="display: none;">لطفاً اعتبار را وارد کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="email">ایمیل:</label>
-            <input type="email" id="email" name="email" class="form-control" placeholder="ایمیل">
-            <div class="alert alert-danger" style="display: none;">لطفاً ایمیل معتبر وارد کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="username">نام کاربری:</label>
-            <input type="text" id="username" name="username" class="form-control" placeholder="نام کاربری">
-            <div class="alert alert-danger" style="display: none;">لطفاً نام کاربری خود را وارد کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="password">رمز عبور:</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="رمز عبور">
-            <div class="alert alert-danger" style="display: none;">لطفاً رمز عبور خود را وارد کنید.</div>
-        </div>
-
-        <div class="form-group">
-            <label for="profile_picture">عکس پروفایل:</label>
-            <input type="file" id="profile_picture" name="profile_picture" class="form-control-file">
-            <div class="alert alert-danger" style="display: none;">لطفاً عکس پروفایل خود را وارد کنید.</div>
-        </div>
-
-        <button type="submit" class="btn btn-success btn-block">ثبت‌نام</button>
-    </form>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const form = document.querySelector("form");
+        const fields = form.querySelectorAll("input, select");
+
+        form.addEventListener("submit", function(event) {
+            let isValid = true;
+
+            // Clear existing errors
+            fields.forEach(function(field) {
+                field.classList.remove("is-invalid");
+            });
+
+            // Helper functions for validation
+            function showError(input, message) {
+                input.classList.add("is-invalid");
+                const errorDiv = input.nextElementSibling;
+                errorDiv.textContent = message;
+                isValid = false;
+            }
+
+            // Validate First Name
+            const firstName = document.getElementById("first_name");
+            if (firstName.value.trim() === "") {
+                showError(firstName, "لطفاً نام خود را وارد کنید.");
+            }
+
+            // Validate Last Name
+            const lastName = document.getElementById("last_name");
+            if (lastName.value.trim() === "") {
+                showError(lastName, "لطفاً نام خانوادگی خود را وارد کنید.");
+            }
+
+            // Validate Gender
+            const gender = document.getElementById("gender");
+            if (gender.value === "") {
+                showError(gender, "لطفاً جنسیت خود را انتخاب کنید.");
+            }
+
+            // Validate Credit
+            const credit = document.getElementById("credit");
+            if (credit.value.trim() === "" || isNaN(credit.value) || credit.value <= 0) {
+                showError(credit, "لطفاً اعتبار معتبر وارد کنید.");
+            }
+
+            // Validate Email
+            const email = document.getElementById("email");
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value)) {
+                showError(email, "لطفاً ایمیل معتبر وارد کنید.");
+            }
+
+            // Validate Username
+            const username = document.getElementById("username");
+            if (username.value.trim() === "") {
+                showError(username, "لطفاً نام کاربری خود را وارد کنید.");
+            }
+
+            // Validate Password
+            const password = document.getElementById("password");
+            if (password.value.length < 6) {
+                showError(password, "رمز عبور باید حداقل ۶ کاراکتر باشد.");
+            }
+
+            // Validate Profile Picture
+            const profilePicture = document.getElementById("profile_picture");
+            if (profilePicture.files.length === 0) {
+                showError(profilePicture, "لطفاً عکس پروفایل خود را وارد کنید.");
+            }
+
+            // Prevent form submission if any field is invalid
+            if (!isValid) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
