@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.forms import UserChangeForm
+
 from accounts.models import Profile
 
 
@@ -61,3 +63,16 @@ class ProfileRegisterForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ProfileRegisterForm, self).__init__(*args, **kwargs)
+
+
+class ProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ["credit", "gender", "profile_picture"]
+
+
+class UserEditForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        fields = ["first_name", "last_name", "email"]
+
+    password = None

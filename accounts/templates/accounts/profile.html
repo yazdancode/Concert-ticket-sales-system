@@ -18,6 +18,9 @@
         <p>آدرس:</p>
         <p>مقدار اعتبار:{{ profile.Credit }}</p>
     </div>
+    <ul class="btnul">
+        <li><a class="btn btn-primary" href="{% url 'profile_edite' %}">ویرایش پروفایل</a> </li>
+    </ul>
     <div class="col-md-4">
         <img src="{{ profile.profile_picture.url }}" alt="">
     </div>

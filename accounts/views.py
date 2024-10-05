@@ -2,16 +2,16 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect
-from django.views.generic import DetailView
-from django.urls import reverse_lazy
-from django.views.generic import FormView, RedirectView
-from .forms import LoginForm, ProfileRegisterForm
-from django.shortcuts import get_object_or_404, render
-from accounts.models import Profile
-from django.urls import reverse
 from django.db import IntegrityError
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.urls import reverse
+from django.urls import reverse_lazy
+from django.views.generic import DetailView
+from django.views.generic import FormView, RedirectView
+from accounts.models import Profile
+from .forms import LoginForm, ProfileRegisterForm, ProfileEditForm, UserEditForm
 
 
 class CustomLoginView(FormView):
@@ -101,3 +101,32 @@ def ProfileRegisterView(request):
 
     context = {"form": profile_register_form}
     return render(request, "accounts/profileRegister.html", context)
+
+
+def ProfileEditView(request):
+    if not hasattr(request.user, "profile"):
+        Profile.objects.create(user=request.user)
+
+    if request.method == "POST":
+        profile_edit_form = ProfileEditForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+        userEditForm = UserEditForm(request.POST, instance=request.user)
+        if profile_edit_form.is_valid() and userEditForm.is_valid():
+            profile_edit_form.save()
+            userEditForm.save()
+            return HttpResponseRedirect(reverse("profile"))
+    else:
+        profile_edit_form = ProfileEditForm(instance=request.user.profile)
+        userEditForm = UserEditForm(instance=request.user)
+
+    context = {
+        "profile_edit_form": profile_edit_form,
+        "userEditForm": userEditForm,
+        "profileimage": (
+            request.user.profile.profile_picture
+            if request.user.profile.profile_picture
+            else None
+        ),
+    }
+    return render(request, "accounts/profileEdit.html", context)

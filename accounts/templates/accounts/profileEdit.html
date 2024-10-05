@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ویرایش پروفایل</title>
+</head>
+<body>
+<form action="" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="mainborder">
+        <div class="row">
+            <div class="col-md-10">
+                <div>
+                    <p class="border"><span class="title">نام</span>{{ userEditForm.first_name }}</p>
+                    <p class="border"><span class="title">نام خانوادگی</span>{{ userEditForm.last_name }}</p>
+                    <p class="border"><span class="title">ایمیل</span>{{ userEditForm.email }}</p>
+                    <p class="border"><span class="title">جنسیت</span>{{ profile_edit_form.gender }}</p>
+                    <p class="border"><span class="title">مقدار اعتبار</span>{{ profile_edit_form.credit }}</p>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="imageBox">
+                    <img src="{{ profileimage.url }}" alt="">
+                </div>
+                {{ profile_edit_form.profile_picture }}
+            </div>
+        </div>
+        <div class="bottonborder">
+            <button type="submit" class="btn btn-success">ذخیره</button>
+        </div>
+    </div>
+
+</form>
+
+</body>
+</html>
