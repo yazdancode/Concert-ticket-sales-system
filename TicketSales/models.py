@@ -1,6 +1,5 @@
 from datetime import timedelta
 from decimal import Decimal
-
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator, MaxValueValidator, RegexValidator
 from django.db import models
@@ -274,3 +273,4 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.profilemodel.name} {self.profilemodel.family} (${self.price})"
+
